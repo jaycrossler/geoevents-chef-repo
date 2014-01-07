@@ -10,7 +10,7 @@ Configuration
 
 1. Download VirtualBox and install it (free at https://www.virtualbox.org/)
 2. Download Vagrant and install it (free at http://www.vagrantup.com/downloads)
-3. Download Git and install it (free at )
+3. Download Git and install it (free at http://git-scm.com/downloads or it might be preinstalled if on a mac)
 
 4. Open a command line, and 'cd' to or create a directory to keep your source code. I use a directory named Sites for example that's in my home directory (~/Sites)
 5. Checkout this chef repo to your local machine:
