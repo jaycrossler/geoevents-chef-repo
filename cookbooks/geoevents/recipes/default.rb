@@ -77,7 +77,7 @@ execute "collect_static" do
 end
 
 bash "install_fixtures" do
-  code "source #{node['geoevents']['virtualenv']['location']}/bin/activate && paver install_dev_fixtures"
+  code "source #{node['geoevents']['virtualenv']['location']}/bin/activate && paver delayed_fixtures"
   cwd "#{node['geoevents']['location']}"
   user 'postgres'
   action :nothing

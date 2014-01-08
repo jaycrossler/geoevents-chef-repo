@@ -11,5 +11,15 @@
 .idea/*
 .vagrant
 .vagrant/*
+*.swp
+
+.DS_Store
+CACHE/*
+.idea
+.idea/*
+*.log
+*.pot
+*.pyc
+
 Berksfile.lock
 vagrant_dev_settings.yml
