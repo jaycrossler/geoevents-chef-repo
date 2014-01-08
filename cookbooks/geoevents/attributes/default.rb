@@ -17,7 +17,7 @@ default[:postgis][:version] = '2.0.4'
 default['postgis']['template_name'] = 'template_postgis'
 default['postgis']['locale'] = 'en_US.utf8'
 
-default['geoevents']['settings']['static_root'] = '/data/www'
+default['geoevents']['settings']['static_root'] = '/usr/src/geoevents/geoevents/static'
 default['geoevents']['settings']['static_url'] = '/static/'
 
 default['geoevents']['settings']['DATABASES'] = {
