@@ -58,7 +58,28 @@ directory node['geoevents']['logging']['location'] do
 end
 
 directory node['geoevents']['settings']['static_root'] do
-  owner "root"
+  owner "www-data"
+  mode 00755
+  action :create
+  recursive true
+end
+
+directory "#{node['geoevents']['settings']['static_root']}/CACHE" do
+  owner "www-data"
+  mode 00755
+  action :create
+  recursive true
+end
+
+directory "#{node['geoevents']['settings']['static_root']}/CACHE/js" do
+  owner "www-data"
+  mode 00755
+  action :create
+  recursive true
+end
+
+directory "#{node['geoevents']['settings']['static_root']}/CACHE/css" do
+  owner "www-data"
   mode 00755
   action :create
   recursive true

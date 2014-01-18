@@ -31,6 +31,8 @@ FileUtils.mkdir(host_cache_path) unless File.exist?(host_cache_path)
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.berkshelf.enabled = true  
 
+  config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
+
   if vagrant_config and vagrant_config['AWS-GEOEVENTS']['DEPLOY_TO_AWS']==true
     config.vm.box = "ubuntu_aws"
     config.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
@@ -59,6 +61,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision :shell, :path => "scripts/install_ruby.sh", :args => "1.9.3"
   config.vm.provision :shell, :path => "scripts/install_PIL.sh"
   config.vm.provision :shell, :inline => "gem install chef --version 11.6.0 --no-rdoc --no-ri --conservative"
+  config.vm.provision :shell, :path => "scripts/restart_web_server.sh"
 
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = "cookbooks"
@@ -66,6 +69,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     chef.add_recipe "python"
     chef.add_recipe "git"
     chef.add_recipe "geoevents"
+
+    if vagrant_config and vagrant_config['AWS-GEOEVENTS']['USE_LOCAL_REPO']==true
+      config.vm.synced_folder "../geoevents", "/vagrant/geoevents-repo"
+
+    chef.json = {
+      :geoevents => {
+        :git_repo => {
+          :location => "file:///vagrant/geoevents-repo/"
+        }
+      }
+    }
+
+    end
   end
 
 end
