@@ -21,11 +21,18 @@ git node['geoevents']['location'] do
   action :sync
   notifies :run, "execute[install_geoevents_dependencies]", :immediately
   notifies :run, "bash[sync_db]"
-  notifies :run, "execute[delayed_fixtures]"
+  notifies :run, "execute[install_map_fixtures]"
 end
 
 execute "install_geoevents_dependencies" do
   command "#{node['geoevents']['virtualenv']['location']}/bin/pip install -r geoevents/requirements.txt"
+  cwd node['geoevents']['location']
+  action :nothing
+  user 'root'
+end
+
+execute "install_map_fixtures" do
+  command "sudo #{node['geoevents']['virtualenv']['location']}/bin/activate && paver delayed_fixtures"
   cwd node['geoevents']['location']
   action :nothing
   user 'root'
