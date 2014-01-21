@@ -21,7 +21,7 @@ git node['geoevents']['location'] do
   action :sync
   notifies :run, "execute[install_geoevents_dependencies]", :immediately
   notifies :run, "bash[sync_db]"
-#  notifies :run, "execute[collect_static]"
+  notifies :run, "execute[delayed_fixtures]"
 end
 
 execute "install_geoevents_dependencies" do

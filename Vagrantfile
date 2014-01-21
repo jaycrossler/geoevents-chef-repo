@@ -53,35 +53,42 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   else
     config.vm.box = "precise64"
     config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+    config.vm.network :public_network
   end
 
-  config.vm.network :public_network
+  if vagrant_config and vagrant_config['AWS-GEOEVENTS']['SKIP_SCRIPTS']
 
-  config.vm.provision :shell, :path => "scripts/install_rvm.sh",  :args => "stable"
-  config.vm.provision :shell, :path => "scripts/install_ruby.sh", :args => "1.9.3"
-  config.vm.provision :shell, :path => "scripts/install_PIL.sh"
-  config.vm.provision :shell, :inline => "gem install chef --version 11.6.0 --no-rdoc --no-ri --conservative"
-  config.vm.provision :shell, :path => "scripts/restart_web_server.sh"
+      if vagrant_config and vagrant_config['AWS-GEOEVENTS']['USE_LOCAL_REPO']==true
+          config.vm.synced_folder "../geoevents", "/vagrant/geoevents-repo"
+      end
 
-  config.vm.provision :chef_solo do |chef|
-    chef.cookbooks_path = "cookbooks"
-    chef.add_recipe "apt"
-    chef.add_recipe "python"
-    chef.add_recipe "git"
-    chef.add_recipe "geoevents"
+  else
+      config.vm.provision :shell, :path => "scripts/install_rvm.sh",  :args => "stable"
+      config.vm.provision :shell, :path => "scripts/install_ruby.sh", :args => "1.9.3"
+      config.vm.provision :shell, :path => "scripts/install_PIL.sh"
+      config.vm.provision :shell, :inline => "gem install chef --version 11.6.0 --no-rdoc --no-ri --conservative"
+      config.vm.provision :shell, :path => "scripts/restart_web_server.sh"
 
-    if vagrant_config and vagrant_config['AWS-GEOEVENTS']['USE_LOCAL_REPO']==true
-      config.vm.synced_folder "../geoevents", "/vagrant/geoevents-repo"
+      config.vm.provision :chef_solo do |chef|
+        chef.cookbooks_path = "cookbooks"
+        chef.add_recipe "apt"
+        chef.add_recipe "python"
+        chef.add_recipe "git"
+        chef.add_recipe "geoevents"
 
-    chef.json = {
-      :geoevents => {
-        :git_repo => {
-          :location => "file:///vagrant/geoevents-repo/"
+        if vagrant_config and vagrant_config['AWS-GEOEVENTS']['USE_LOCAL_REPO']==true
+          config.vm.synced_folder "../geoevents", "/vagrant/geoevents-repo"
+
+        chef.json = {
+          :geoevents => {
+            :git_repo => {
+              :location => "file:///vagrant/geoevents-repo/"
+            }
+          }
         }
-      }
-    }
 
-    end
+        end
+      end
   end
 
 end
