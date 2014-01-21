@@ -15,6 +15,9 @@ Configuration
 5. If you want to deploy to Amazon or some other provider, create a file named 'vagrant_dev_settings.yml' in the code directory (i.e. ~/Sites) and add in provider deployment details.
 6. After everything is installed, you can type 'vagrant provision' to have it update code from github and install new libraries, or 'vagrant halt' to stop the VM.
 
+Installation Steps
+==================
+
     sudo gem install berkshelf
     sudo vagrant plugin install vagrant-berkshelf
     cd ~/Sites (or wherever you keep your code)
