@@ -32,7 +32,7 @@ execute "install_geoevents_dependencies" do
 end
 
 execute "install_map_fixtures" do
-  command "sudo #{node['geoevents']['virtualenv']['location']}/bin/activate && paver delayed_fixtures"
+  command "sudo #{node['geoevents']['virtualenv']['location']}/bin/activate && sudo paver delayed_fixtures"
   cwd node['geoevents']['location']
   action :nothing
   user 'root'
